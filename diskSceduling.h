@@ -56,8 +56,10 @@ int scan(vector<int>& requests, int head, int direction, int disk_size) {
 }
 
 // Function to perform C-SCAN scheduling
-int cscan(vector<int>& requests, int head, int direction, int disk_size) {
+// Function to perform SCAN scheduling
+int scan(vector<int>& requests, int head, int direction, int disk_size) {
     int total_head_movements = 0;
+    int end = (direction == 1) ? disk_size : 0;
 
     while (!requests.empty()) {
         auto it = (direction == 1) ? min_element(requests.begin(), requests.end()) : max_element(requests.begin(), requests.end());
@@ -67,13 +69,14 @@ int cscan(vector<int>& requests, int head, int direction, int disk_size) {
             head = *it;
             requests.erase(it);
         } else {
-            total_head_movements += abs(head - disk_size);
-            head = 0;
-            direction = 1; // Move to the beginning
+            total_head_movements += abs(head - end);
+            head = end;
+            direction = -direction; // Change direction
         }
     }
     return total_head_movements;
 }
+
 
 int look(vector<int>& requests, int head, int direct) {
     string direction;
@@ -204,6 +207,8 @@ int clook(vector<int>& requests, int head) {
  
     return total;
 }
+
+
 int newAlgo(vector<int>&arr)
 {
     int prev = 0;
